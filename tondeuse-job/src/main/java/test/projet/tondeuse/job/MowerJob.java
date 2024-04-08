@@ -1,7 +1,5 @@
 package test.projet.tondeuse.job;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -26,86 +24,83 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.transaction.PlatformTransactionManager;
-import test.projet.tondeuse.job.handler.PelouseSizeHandler;
-import test.projet.tondeuse.job.model.Tondeuse;
-import test.projet.tondeuse.job.processor.ActivateTondeuseProcessor;
-import test.projet.tondeuse.job.reader.MultiLineTondeuseReader;
+import test.projet.tondeuse.job.handler.LawnSizeHandler;
+import test.projet.tondeuse.job.model.Mower;
+import test.projet.tondeuse.job.processor.ActivateMowerProcessor;
+import test.projet.tondeuse.job.reader.MultiLineMowerReader;
 
 @Configuration
 @EnableRetry
-public class TondeuseJob {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TondeuseJob.class);
+public class MowerJob {
 
-    @Value("input/tondeuse_instruction.txt")
+    @Value("${file.input}")
     private Resource inputTxt;
 
-    @Value("file:output/output.txt")
+    @Value("${file.output}")
     private Resource outputTxt;
 
     @Bean(name = "activateJob")
-    public Job activateJob(JobRepository jobRepository, @Qualifier("readAndOrderTondeuseStep") Step readAndOrderTondeuseStep) {
-        return new JobBuilder("startTondeuse", jobRepository).incrementer(new RunIdIncrementer())
+    public Job activateJob(JobRepository jobRepository, @Qualifier("readAndOrderMowerStep") Step readAndOrderMowerStep) {
+        return new JobBuilder("startMower", jobRepository).incrementer(new RunIdIncrementer())
                 //.listener(listener)
                 //
                 .preventRestart()
-                .start(readAndOrderTondeuseStep).build();
+                .start(readAndOrderMowerStep).build();
     }
 
     @Bean
-    protected Step readAndOrderTondeuseStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-                                            ItemProcessor<Tondeuse, Tondeuse> processor, FlatFileItemWriter<Tondeuse> writer, PelouseSizeHandler pelouseSizeHandler) {
-        return new StepBuilder("readAndOrderTondeuseStep", jobRepository).<Tondeuse, Tondeuse>chunk(2, transactionManager)
-                .reader(itemReader(pelouseSizeHandler)).processor(processor).writer(writer).listener(pelouseSizeHandler).build();
+    protected Step readAndOrderMowerStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+                                         ItemProcessor<Mower, Mower> processor, FlatFileItemWriter<Mower> writer, LawnSizeHandler lawnSizeHandler) {
+        return new StepBuilder("readAndOrderMowerStep", jobRepository).<Mower, Mower>chunk(2, transactionManager)
+                .reader(itemReader(lawnSizeHandler)).processor(processor).writer(writer).listener(lawnSizeHandler).build();
     }
 
     @Bean
     @StepScope
-    public MultiLineTondeuseReader itemReader(PelouseSizeHandler pelouseSizeHandler) {
+    public MultiLineMowerReader itemReader(LawnSizeHandler lawnSizeHandler) {
         DelimitedLineTokenizer delimiter = new DelimitedLineTokenizer();
         delimiter.setDelimiter(" ");
         FlatFileItemReader<FieldSet> delegate = new FlatFileItemReaderBuilder<FieldSet>().name("delegateItemReader")
                 .resource(this.inputTxt)
                 .linesToSkip(1)
-                .skippedLinesCallback(pelouseSizeHandler)
+                .skippedLinesCallback(lawnSizeHandler)
                 .lineTokenizer(delimiter)
                 .fieldSetMapper(new PassThroughFieldSetMapper())
                 .build();
-        MultiLineTondeuseReader reader = new MultiLineTondeuseReader();
+        MultiLineMowerReader reader = new MultiLineMowerReader();
         reader.setDelegate(delegate);
         return reader;
     }
 
 
     @Bean
-    public FlatFileItemWriter<Tondeuse> itemWriter() {
-        FlatFileItemWriter<Tondeuse> writer = new FlatFileItemWriter<>();
+    @StepScope
+    public FlatFileItemWriter<Mower> itemWriter() {
+        FlatFileItemWriter<Mower> writer = new FlatFileItemWriter<>();
         writer.setResource((WritableResource) this.outputTxt);
         //All job repetitions should recreate a nex outputFile
         writer.setAppendAllowed(false);
+        DelimitedLineAggregator<Mower> aggregator = new DelimitedLineAggregator<>();
+        aggregator.setDelimiter(" ");
+        BeanWrapperFieldExtractor<Mower> beanWrapper = new BeanWrapperFieldExtractor<>();
 
         //Name field values sequence based on object properties
-        writer.setLineAggregator(new DelimitedLineAggregator<>() {
-            {
-                setDelimiter(" ");
-                setFieldExtractor(new BeanWrapperFieldExtractor<>() {
-                    {
-                        setNames(new String[]{"id", "posX", "posY", "orientation"});
-                    }
-                });
-            }
-        });
+        beanWrapper.setNames(new String[]{"id", "posX", "posY", "orientation"});
+        aggregator.setFieldExtractor(beanWrapper);
+        writer.setLineAggregator(aggregator);
         return writer;
     }
 
+
     @Bean
     @StepScope
-    public PelouseSizeHandler pelouseSizeHandler() {
-        return new PelouseSizeHandler();
+    public LawnSizeHandler pelouseSizeHandler() {
+        return new LawnSizeHandler();
     }
 
     @Bean
-    public ItemProcessor<Tondeuse, Tondeuse> itemProcessor() {
-        return new ActivateTondeuseProcessor();
+    public ItemProcessor<Mower, Mower> itemProcessor() {
+        return new ActivateMowerProcessor();
     }
 
 }

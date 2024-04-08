@@ -13,20 +13,25 @@ import java.util.UUID;
 @Slf4j
 @ToString
 @Component
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tondeuse {
-    public int posX;
-    public int posY;
+public class Mower {
+
+    public static final String ORIENTATION_NOT_CHANGED_BECAUSE_NOT_RECOGNIZED = "Orientation {} not changed because not recognized.";
+    private int posX;
+    private int posY;
     @NonNull
-    public String orientation;
+    private Orientation orientation;
     @NonNull
-    public List<String> orders;
+    private List<Order> orders;
+    @NonNull
+    @Setter(AccessLevel.NONE)
     private UUID id = UUID.randomUUID();
 
     public void initiateOrder(int maxSizeX, int maxSizeY) {
-        for (String order : this.orders) {
-            switch (order) {
+        for (Order order : this.orders) {
+            switch (order.name()) {
                 case "A":
                     this.goForward(maxSizeX, maxSizeY);
                     break;
@@ -37,17 +42,17 @@ public class Tondeuse {
                     this.rotateLeft();
                     break;
                 default:
-                    //TODO LOG WARNING
+                    log.warn("Order {} skipped because not recognized.", order);
                     break;
             }
 
         }
         this.orders = new ArrayList<>();
-        log.info("Tondeuse {} finished orders ! It got to the position {} {} and is oriented {}. ", this.id, this.posX, this.posY, this.orientation);
+        log.info("Mower {} finished orders ! It got to the position {} {} and is oriented {}. ", this.id, this.posX, this.posY, this.orientation);
     }
 
-    public void goForward(int maxSizeX, int maxSizeY) {
-        switch (this.orientation) {
+    private void goForward(int maxSizeX, int maxSizeY) {
+        switch (this.orientation.name()) {
             case "N": {
                 if (this.posY < maxSizeY) {
                     this.posY++;
@@ -73,58 +78,56 @@ public class Tondeuse {
                 break;
             }
             default:
-                //TODO LOG WARNING
+                log.warn(ORIENTATION_NOT_CHANGED_BECAUSE_NOT_RECOGNIZED, this.orientation);
                 break;
 
         }
     }
 
-    public void rotateRight() {
-        String orientation = this.orientation;
-        switch (orientation) {
+    private void rotateRight() {
+        switch (this.orientation.name()) {
             case "N": {
-                this.orientation = "E";
+                this.orientation = Orientation.E;
                 break;
             }
             case "E": {
-                this.orientation = "S";
+                this.orientation = Orientation.S;
                 break;
             }
             case "W": {
-                this.orientation = "N";
+                this.orientation = Orientation.N;
                 break;
             }
             case "S": {
-                this.orientation = "W";
+                this.orientation = Orientation.W;
                 break;
             }
             default:
-                //TODO LOG WARNING
+                log.warn(ORIENTATION_NOT_CHANGED_BECAUSE_NOT_RECOGNIZED, this.orientation);
                 break;
         }
     }
 
-    public void rotateLeft() {
-        String orientation = this.orientation;
-        switch (orientation) {
+    private void rotateLeft() {
+        switch (this.orientation.name()) {
             case "N": {
-                this.orientation = "W";
+                this.orientation = Orientation.W;
                 break;
             }
             case "E": {
-                this.orientation = "N";
+                this.orientation = Orientation.N;
                 break;
             }
             case "W": {
-                this.orientation = "S";
+                this.orientation = Orientation.S;
                 break;
             }
             case "S": {
-                this.orientation = "E";
+                this.orientation = Orientation.E;
                 break;
             }
             default:
-                //TODO LOG WARNING
+                log.warn(ORIENTATION_NOT_CHANGED_BECAUSE_NOT_RECOGNIZED, this.orientation);
                 break;
         }
     }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class TondeuseListener implements JobExecutionListener {
+public class MowerListener implements JobExecutionListener {
 }

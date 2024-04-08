@@ -16,9 +16,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
- * Hello world!
+ * Spring boot application for tondeuse test exposition.
+ *
+ * @author Kenan TERRISSE
+ * @version $Id : $Id
  */
 @SpringBootApplication
 @Slf4j
@@ -35,7 +39,7 @@ public class Application implements CommandLineRunner {
     @Autowired
     private JobLauncher jobLauncher;
     @Autowired
-    private Job tondeuseJob;
+    private Job mowerJob;
 
     public static void main(String[] args) {
         if (Application.log.isDebugEnabled()) {
@@ -51,6 +55,9 @@ public class Application implements CommandLineRunner {
         return Application.log;
     }
 
+    /**
+     * display version of artifact in log.
+     */
     @PostConstruct
     public void postConstruct() {
         if (this.logger().isInfoEnabled()) {
@@ -60,9 +67,9 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Application.log.info("Launching Tondeuse Job");
+        Application.log.info("#### Run Mower Job at {} ####", new Date());
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();
-        final JobExecution jobExecution = this.jobLauncher.run(this.tondeuseJob, new JobParameters());
+        final JobExecution jobExecution = this.jobLauncher.run(this.mowerJob, new JobParameters());
         System.exit(exitCodeMapper.intValue(jobExecution.getExitStatus().getExitCode()));
     }
 }

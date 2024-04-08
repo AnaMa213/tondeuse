@@ -13,8 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * Unit test for simple App.
  */
 @ExtendWith(SpringExtension.class)
-public class ApplicationTest
-{
+class ApplicationTest {
     private Application application;
     @Mock
     private Logger logger;
@@ -50,6 +49,6 @@ public class ApplicationTest
         this.application.postConstruct();
         //WHEN
         Mockito.verify(this.logger).isInfoEnabled();
-        Mockito.verify(this.logger).info(separator +  "{}:{} ({}) built on {}" + separator, group, artefact, version, buildTime);
+        Mockito.verify(this.logger).info(separator + "{}:{} ({}) built on {}" + separator, group, artefact, version, buildTime);
     }
 }

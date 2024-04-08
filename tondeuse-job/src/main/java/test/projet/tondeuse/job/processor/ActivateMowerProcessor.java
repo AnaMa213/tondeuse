@@ -20,7 +20,7 @@ public class ActivateMowerProcessor implements ItemProcessor<Mower, Mower> {
     }
 
     @Override
-    public Mower process(@NonNull Mower item) throws Exception {
+    public Mower process(@NonNull Mower item) {
         if (this.stepExecution.getExecutionContext().get("lawnSize") != null) {
             String lawnSize = (String) stepExecution.getExecutionContext().get("lawnSize");
             assert lawnSize != null;

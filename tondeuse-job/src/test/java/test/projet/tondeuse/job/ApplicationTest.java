@@ -19,7 +19,7 @@ class ApplicationTest {
     private Logger logger;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         this.application = Mockito.spy(new Application());
         Mockito.when(this.application.logger()).thenReturn(this.logger);

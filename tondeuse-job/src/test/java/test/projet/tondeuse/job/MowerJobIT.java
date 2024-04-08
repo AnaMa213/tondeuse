@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.*;
-import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
@@ -20,8 +19,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import test.projet.tondeuse.job.model.Mower;
-import test.projet.tondeuse.job.reader.MultiLineMowerReader;
 
 import java.util.Collection;
 
@@ -35,29 +32,16 @@ import java.util.Collection;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class MowerJobIT {
 
-    @Value("${file.input}")
-    private Resource testInputTxt;
 
     @Value("${file.output}")
     private Resource testOutputTxt;
 
-    @Value("${file.writer.output.expected}")
-    private Resource writerOutputExpectedTxt;
-
-    @Value("${file.writer.output}")
-    private Resource writerOutputTxt;
 
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JobRepositoryTestUtils jobRepositoryTestUtils;
-
-    @Autowired
-    private MultiLineMowerReader itemReader;
-
-    @Autowired
-    private FlatFileItemWriter<Mower> itemWriter;
 
 
     @After

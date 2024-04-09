@@ -9,14 +9,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+/**
+ * Integration test of {@link Application}.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ApplicationIT {
+    /**
+     * Mock bean of Application.
+     */
     @MockBean
     Application application;
+    /**
+     * example been to check integrity of Application.
+     */
     @Autowired
     private Job componentTest;
 
+    /**
+     * test integrity of {@link Application}.
+     */
     @Test
     void testMain() {
         Assertions.assertNotNull(this.componentTest);

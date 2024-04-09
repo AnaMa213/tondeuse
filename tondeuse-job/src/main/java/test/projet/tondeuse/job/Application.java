@@ -22,25 +22,48 @@ import java.util.Date;
  * Spring boot application for tondeuse test exposition.
  *
  * @author Kenan TERRISSE
- * @version $Id : $Id
+ * @version 1.0
  */
 @SpringBootApplication
 @Slf4j
 public class Application implements CommandLineRunner {
     private static final String SEPARATOR = "\n\n====================================================================================================\n\n";
+    /**
+     * build artifact id.
+     */
     @Value("${build.artifact:?}")
     protected String buildArtefact;
+    /**
+     * build group id.
+     */
     @Value("${build.group:?}")
     protected String buildGroup;
+    /**
+     * build timestamp.
+     */
     @Value("${build.time:?}")
     protected String buildTimestamp;
+    /**
+     * build version.
+     */
     @Value("${build.version:?}")
     protected String buildVersion;
+    /**
+     * job launcher to run application spring batch job.
+     */
     @Autowired
     private JobLauncher jobLauncher;
+    /**
+     * Spring batch job.
+     */
     @Autowired
     private Job mowerJob;
 
+    /**
+     * Application main method. run the mower job.
+     *
+     * @param args arguments to use on main method.
+     */
     public static void main(String[] args) {
         if (Application.log.isDebugEnabled()) {
             Application.log.debug("Application started with command-line arguments: {}.", Arrays.toString(args));
@@ -51,6 +74,9 @@ public class Application implements CommandLineRunner {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * method to get logger of the application.
+     */
     Logger logger() {
         return Application.log;
     }
@@ -65,6 +91,11 @@ public class Application implements CommandLineRunner {
         }
     }
 
+    /**
+     * run method to run the mower job via the job launcher.
+     *
+     * @param args arguments passed by the main method.
+     */
     @Override
     public void run(String... args) throws Exception {
         Application.log.info("#### Run Mower Job at {} ####", new Date());

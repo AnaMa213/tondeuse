@@ -8,9 +8,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Unit case of class {@link Order}.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @ExtendWith(MockitoExtension.class)
 class OrderTest {
 
+    /**
+     * use case of {@link Order#valueOf(String)}. <p>
+     * test all values of order Enum.
+     */
     @Test
     void valueOfTests() {
         //GIVEN

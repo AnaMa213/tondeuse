@@ -4,7 +4,6 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -29,25 +28,58 @@ import test.projet.tondeuse.job.model.Mower;
 import test.projet.tondeuse.job.processor.ActivateMowerProcessor;
 import test.projet.tondeuse.job.reader.MultiLineMowerReader;
 
+/**
+ * Mower job configuration. </br>
+ * <p>
+ * This job is used to initiate different mowers in a lawn, so they can go there final position. </br>
+ * <p>
+ * A file referring to different mower will be read and, sequentially, a list of orders will be given to the mower to move in the lawn.
+ * Then a writer will create an output file to specify the final position and orientation of each mower in the lawn.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @Configuration
 @EnableRetry
 public class MowerJob {
 
+    /**
+     * input file read to get the mower and lawn information.
+     */
     @Value("${file.input}")
     private Resource inputTxt;
-
+    /**
+     * localisation of the output file.
+     */
     @Value("${file.output}")
     private Resource outputTxt;
 
+    /**
+     * global job to read the input file and move all different mower.
+     *
+     * @param jobRepository         job repository of the job
+     * @param readAndOrderMowerStep step to read input file, process records and write the final position of all mower.
+     * @return the {@link Job} created to get launched at application run.
+     */
     @Bean(name = "activateJob")
     public Job activateJob(JobRepository jobRepository, @Qualifier("readAndOrderMowerStep") Step readAndOrderMowerStep) {
-        return new JobBuilder("startMower", jobRepository).incrementer(new RunIdIncrementer())
+        return new JobBuilder("startMower", jobRepository)
                 //.listener(listener)
                 //
                 .preventRestart()
                 .start(readAndOrderMowerStep).build();
     }
 
+    /**
+     * read, process and write step to get the mower information and make them move in the lawn.
+     *
+     * @param jobRepository      job repository of the job.
+     * @param transactionManager transaction manager of the job.
+     * @param processor          processor ({@link ItemProcessor}) used to process record {@link Mower}.
+     * @param writer             writer ({@link FlatFileItemWriter<Mower>}) used to write the record on output file.
+     * @param lawnSizeHandler    handler ({@link LawnSizeHandler}) to get the header line (lawn size) of the input file skipped by the reader.
+     * @return the {@link Step} created to get used by the Job.
+     */
     @Bean
     protected Step readAndOrderMowerStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                                          ItemProcessor<Mower, Mower> processor, FlatFileItemWriter<Mower> writer, LawnSizeHandler lawnSizeHandler) {
@@ -55,6 +87,12 @@ public class MowerJob {
                 .reader(itemReader(lawnSizeHandler)).processor(processor).writer(writer).listener(lawnSizeHandler).build();
     }
 
+    /**
+     * reader initialization.
+     *
+     * @param lawnSizeHandler handler ({@link LawnSizeHandler}) to get the header line (lawn size) of the input file skipped by the reader.
+     * @return {@link MultiLineMowerReader} created to get used by the step.
+     */
     @Bean
     @StepScope
     public MultiLineMowerReader itemReader(LawnSizeHandler lawnSizeHandler) {
@@ -73,12 +111,17 @@ public class MowerJob {
     }
 
 
+    /**
+     * writer initialization.
+     *
+     * @return {@link FlatFileItemWriter<Mower>} created to get used by the step.
+     */
     @Bean
     @StepScope
     public FlatFileItemWriter<Mower> itemWriter() {
         FlatFileItemWriter<Mower> writer = new FlatFileItemWriter<>();
         writer.setResource((WritableResource) this.outputTxt);
-        //All job repetitions should recreate a nex outputFile
+        //All job repetitions should recreate a new outputFile
         writer.setAppendAllowed(false);
         DelimitedLineAggregator<Mower> aggregator = new DelimitedLineAggregator<>();
         aggregator.setDelimiter(" ");
@@ -91,13 +134,22 @@ public class MowerJob {
         return writer;
     }
 
-
+    /**
+     * handler initialization.
+     *
+     * @return {@link LawnSizeHandler} created to get used by the step.
+     */
     @Bean
     @StepScope
-    public LawnSizeHandler pelouseSizeHandler() {
+    public LawnSizeHandler lawnSizeHandler() {
         return new LawnSizeHandler();
     }
 
+    /**
+     * processor initialization.
+     *
+     * @return {@link ItemProcessor} created to get used by the step.
+     */
     @Bean
     public ItemProcessor<Mower, Mower> itemProcessor() {
         return new ActivateMowerProcessor();

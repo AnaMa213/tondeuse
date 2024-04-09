@@ -6,8 +6,18 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Unit case of class {@link Orientation}.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 class OrientationTest {
 
+    /**
+     * use case of {@link Orientation#valueOf(String)}. <p>
+     * test all values of orientation Enum.
+     */
     @Test
     void valueOfTests() {
         //GIVEN

@@ -12,12 +12,27 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Unit Test of class {@link Mower}.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @ExtendWith(MockitoExtension.class)
 class MowerTest {
-
+    /**
+     * Mower use for testing.
+     */
     private Mower mower;
+    /**
+     * id of mower.
+     */
     private UUID id;
 
+    /**
+     * before each use case test. <p>
+     * init mower.
+     */
     @BeforeEach
     void initMower() {
         this.id = UUID.randomUUID();
@@ -25,13 +40,15 @@ class MowerTest {
         this.mower = Mower.builder().id(this.id).posX(1).posY(2).orientation(Orientation.N).orders(orders).build();
     }
 
+    /**
+     * use case of {@link Mower#initiateOrder(int, int)} <p>
+     * Given. <p>
+     * When initiate order of mower with lawn size. <p>
+     * Then no exceptions thrown and assert all elements of mower equal final position.
+     */
     @Test
     void givenInitMower_whenInitiateOrder_thenMowerMoveSuccessfully() {
         //GIVEN
-//        Mockito.when(this.mower.getPosX()).thenReturn(1);
-//        Mockito.when(this.mower.getPosY()).thenReturn(2);
-//        Mockito.when(this.mower.getOrientation()).thenReturn("N");
-//        Mockito.when(this.mower.getOrders()).thenReturn(orders);
 
         //WHEN
         Assertions.assertDoesNotThrow(() -> this.mower.initiateOrder(5, 5));
@@ -44,7 +61,12 @@ class MowerTest {
 
     }
 
-
+    /**
+     * use case of {@link Mower#getPosX()} <p>
+     * Given. <p>
+     * When get pos x of mower. <p>
+     * Then  assert pos x of mower equal posX.
+     */
     @Test
     void givenInitMower_whenGetPosX_thenGetPosXSuccessfully() {
         //GIVEN
@@ -57,6 +79,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#getPosY()} <p>
+     * Given. <p>
+     * When get pos y of mower. <p>
+     * Then  assert pos y of mower equal posY.
+     */
     @Test
     void givenInitMower_whenGetPosY_thenGetPosYSuccessfully() {
         //GIVEN
@@ -69,6 +97,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#getOrientation()} <p>
+     * Given. <p>
+     * When get orientation of mower. <p>
+     * Then  assert orientation of mower equal orientation.
+     */
     @Test
     void givenInitMower_whenGetOrientation_thenGetOrientationSuccessfully() {
         //GIVEN
@@ -81,6 +115,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#getOrders()} <p>
+     * Given. <p>
+     * When get orders of mower. <p>
+     * Then  assert orders of mower equal orders.
+     */
     @Test
     void givenInitMower_whenGetOrders_thenGetOrdersSuccessfully() {
         //GIVEN
@@ -94,6 +134,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#getId()} <p>
+     * Given. <p>
+     * When get id of mower. <p>
+     * Then  assert id of mower equal id.
+     */
     @Test
     void givenInitMower_whenGetId_thenGetIdSuccessfully() {
         //GIVEN
@@ -106,6 +152,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#setPosX(int)} <p>
+     * Given. <p>
+     * When set pos x of mower. <p>
+     * Then  assert pos x of mower equal posX.
+     */
     @Test
     void givenInitMower_whenSetPosX_thenSetPosXSuccessfully() {
         //GIVEN
@@ -118,6 +170,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#setPosY(int)} <p>
+     * Given. <p>
+     * When set pos y of mower. <p>
+     * Then  assert pos y of mower equal posY.
+     */
     @Test
     void givenInitMower_whenSetPosY_thenSetPosYSuccessfully() {
         //GIVEN
@@ -130,6 +188,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#setOrientation(Orientation)} <p>
+     * Given. <p>
+     * When set orientation of mower. <p>
+     * Then  assert orientation  of mower equal orientation.
+     */
     @Test
     void givenInitMower_whenSetOrientation_thenSetOrientationSuccessfully() {
         //GIVEN
@@ -142,6 +206,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#setOrders(List)} <p>
+     * Given. <p>
+     * When set orders of mower. <p>
+     * Then  assert orders of mower equal orders.
+     */
     @Test
     void givenInitMower_whenSetOrders_thenSetOrdersSuccessfully() {
         //GIVEN
@@ -155,6 +225,12 @@ class MowerTest {
 
     }
 
+    /**
+     * use case of {@link Mower#builder()} <p>
+     * Given id and orders. <p>
+     * When build Mower. <p>
+     * Then  assert all element of mower equal mower elements chosen.
+     */
     @Test
     void testBuilder() {
         //GIVEN
@@ -171,6 +247,12 @@ class MowerTest {
         Assertions.assertEquals(orders, mower.getOrders());
     }
 
+    /**
+     * use case of {@link Mower#toString()} <p>
+     * Given. <p>
+     * When put mower to string. <p>
+     * Then assert string  equal mower to string.
+     */
     @Test
     void testToString() {
         //GIVEN

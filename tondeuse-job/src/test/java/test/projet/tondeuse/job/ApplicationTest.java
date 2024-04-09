@@ -10,14 +10,26 @@ import org.slf4j.Logger;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * Unit test for simple App.
+ * Unit test for Application.
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
  */
 @ExtendWith(SpringExtension.class)
 class ApplicationTest {
+    /**
+     * Application to test.
+     */
     private Application application;
+    /**
+     * Mock of Logger
+     */
     @Mock
     private Logger logger;
 
+    /**
+     * set up method to {@link  Mockito#spy(Object)}  of Application.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -25,6 +37,10 @@ class ApplicationTest {
         Mockito.when(this.application.logger()).thenReturn(this.logger);
     }
 
+    /**
+     * test case of {@link Application#postConstruct()}. <p>
+     * Given Info disabled. When postConstruct(). Then construct in success.
+     */
     @Test
     void testPostConstructWhenInfoDisabled() {
         Mockito.when(this.logger.isInfoEnabled()).thenReturn(false);
@@ -32,6 +48,10 @@ class ApplicationTest {
         Mockito.verify(this.logger).isInfoEnabled();
     }
 
+    /**
+     * test case of {@link Application#postConstruct()}.<p>
+     * Given Info enabled. When postConstruct(). Then construct in success.
+     */
     @Test
     void testPostConstructWhenInfoEnabled() {
         //GIVEN

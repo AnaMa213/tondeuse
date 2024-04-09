@@ -18,23 +18,46 @@ import test.projet.tondeuse.job.model.Orientation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Unit case of class {@link MultiLineMowerReader}
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class MultiLineMowerReaderTest {
 
+    /**
+     * Inject mock of MultiLineMowerReader
+     */
     @InjectMocks
     private MultiLineMowerReader reader;
 
+    /**
+     * mock of FlatFileItemReader.
+     */
     @Mock
     private FlatFileItemReader<FieldSet> delegate;
 
+    /**
+     * mock of fieldSet.
+     */
     @Mock
     private FieldSet line;
 
+    /**
+     * mock of execution context.
+     */
     @Mock
     private ExecutionContext executionContext;
 
-
+    /**
+     * use case of {@link MultiLineMowerReader#read()} <p>
+     * Given. mock input file line <p>
+     * When use read <p>
+     * Then assert line read create a mower with good elements.
+     */
     @Test
     void givenOneLine_whenRead_ThenReturnMower() throws Exception {
         //GIVEN
@@ -66,6 +89,12 @@ class MultiLineMowerReaderTest {
 
     }
 
+    /**
+     * use case of {@link MultiLineMowerReader#close()} <p>
+     * Given.  <p>
+     * When use close <p>
+     * Then assert no exceptions thrown and delegate close invoked.
+     */
     @Test
     void givenDelegateInitiate_whenClose_TheCloseSuccessfully() {
         //GIVEN
@@ -77,6 +106,12 @@ class MultiLineMowerReaderTest {
         Mockito.verify(this.delegate, Mockito.times(1)).close();
     }
 
+    /**
+     * use case of {@link MultiLineMowerReader#open(ExecutionContext)} <p>
+     * Given execution context.  <p>
+     * When use open <p>
+     * Then assert no exceptions thrown and delegate open invoked.
+     */
     @Test
     void givenExecutionContext_whenOpen_thenOpenSuccessfully() {
         //GIVEN
@@ -88,6 +123,12 @@ class MultiLineMowerReaderTest {
         Mockito.verify(this.delegate, Mockito.times(1)).open(this.executionContext);
     }
 
+    /**
+     * use case of {@link MultiLineMowerReader#update(ExecutionContext)} <p>
+     * Given.  <p>
+     * When use update <p>
+     * Then assert no exceptions thrown and delegate open invoked.
+     */
     @Test
     void givenExecutionContext_whenUpdate_thenUpdateSuccessfully() {
         //GIVEN
@@ -99,6 +140,12 @@ class MultiLineMowerReaderTest {
         Mockito.verify(this.delegate, Mockito.times(1)).update(this.executionContext);
     }
 
+    /**
+     * use case of {@link MultiLineMowerReader#setDelegate(FlatFileItemReader)} )} <p>
+     * Given.  <p>
+     * When use setDelegate <p>
+     * Then assert no exceptions thrown.
+     */
     @Test
     void givenDelegate_WhenSetDelegate_ThenDelegateSettedSuccessfully() {
         //GIVEN

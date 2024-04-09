@@ -11,19 +11,43 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
 import test.projet.tondeuse.job.model.Mower;
 
+/**
+ * Unit case of class {@link ActivateMowerProcessor}
+ *
+ * @author Kenan TERRISSE
+ * @version 1.0
+ */
 @ExtendWith(MockitoExtension.class)
 class ActivateMowerProcessorTest {
 
+    /**
+     * inject mock ActivateMowerProcessor.
+     */
     @InjectMocks
     private ActivateMowerProcessor processor;
 
+    /**
+     * mock of step execution.
+     */
     @Mock
     private StepExecution stepExecution;
+    /**
+     * mock of execution context.
+     */
     @Mock
     private ExecutionContext executionContext;
+    /**
+     * mock of mower.
+     */
     @Mock
     private Mower mower;
 
+    /**
+     * use case of {@link ActivateMowerProcessor#beforeStep(StepExecution)} <p>
+     * Given. <p>
+     * When use beforeStep <p>
+     * Then assert no exceptions thrown.
+     */
     @Test
     void givenStepExecution_whenBeforeStep_thenBeforeStepSuccessfully() {
         //GIVEN
@@ -33,6 +57,12 @@ class ActivateMowerProcessorTest {
         Assertions.assertDoesNotThrow(() -> this.processor.beforeStep(this.stepExecution));
     }
 
+    /**
+     * use case of {@link ActivateMowerProcessor#process(Mower)} <p>
+     * Given execution context and lawnSize context variable. <p>
+     * When use process <p>
+     * Then assert no exceptions thrown and verify initiateOrder invoked.
+     */
     @Test
     void givenStepExecution_whenProcess_thenProcessSuccessfully() {
         //GIVEN
@@ -47,6 +77,12 @@ class ActivateMowerProcessorTest {
 
     }
 
+    /**
+     * use case of {@link ActivateMowerProcessor#process(Mower)} <p>
+     * Given execution context and no lawnSize context variable. <p>
+     * When use process <p>
+     * Then assert no exceptions thrown and verify no initiateOrder invoked.
+     */
     @Test
     void givenStepExecution_whenProcess_thenProcessFailed() {
         //GIVEN

@@ -86,7 +86,6 @@
                         <phase>package</phase>
                         <configuration>
                             <mainClass>test.projet.tondeuse.job.Application</mainClass>
-                            <classifier>fat</classifier>
                         </configuration>
                     </execution>
                 </executions>

@@ -16,7 +16,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Spring boot application for tondeuse test exposition.
@@ -98,7 +97,6 @@ public class Application implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-        Application.log.info("#### Run Mower Job at {} ####", new Date());
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();
         final JobExecution jobExecution = this.jobLauncher.run(this.mowerJob, new JobParameters());
         System.exit(exitCodeMapper.intValue(jobExecution.getExitStatus().getExitCode()));

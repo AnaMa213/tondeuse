@@ -24,6 +24,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.transaction.PlatformTransactionManager;
 import test.projet.tondeuse.job.handler.LawnSizeHandler;
+import test.projet.tondeuse.job.listener.MowerListener;
 
 import java.util.Collection;
 
@@ -82,7 +83,7 @@ public class MowerJobIT {
     }
 
     /**
-     * Test of class and method : {@link MowerJob#activateJob(JobRepository, Step)}  <p>
+     * Test of class and method : {@link MowerJob#activateJob(JobRepository, Step, MowerListener)}  <p>
      * Given expected output file <p>
      * <p>
      * When launch job.<p>

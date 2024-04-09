@@ -24,6 +24,7 @@ import org.springframework.core.io.WritableResource;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.transaction.PlatformTransactionManager;
 import test.projet.tondeuse.job.handler.LawnSizeHandler;
+import test.projet.tondeuse.job.listener.MowerListener;
 import test.projet.tondeuse.job.model.Mower;
 import test.projet.tondeuse.job.processor.ActivateMowerProcessor;
 import test.projet.tondeuse.job.reader.MultiLineMowerReader;
@@ -62,10 +63,9 @@ public class MowerJob {
      * @return the {@link Job} created to get launched at application run.
      */
     @Bean(name = "activateJob")
-    public Job activateJob(JobRepository jobRepository, @Qualifier("readAndOrderMowerStep") Step readAndOrderMowerStep) {
+    public Job activateJob(JobRepository jobRepository, @Qualifier("readAndOrderMowerStep") Step readAndOrderMowerStep, MowerListener listener) {
         return new JobBuilder("startMower", jobRepository)
-                //.listener(listener)
-                //
+                .listener(listener)
                 .preventRestart()
                 .start(readAndOrderMowerStep).build();
     }

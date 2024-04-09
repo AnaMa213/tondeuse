@@ -55,6 +55,7 @@ public class Mower {
      * id of the given mower.
      */
     @NonNull
+    @Builder.Default
     @Setter(AccessLevel.NONE)
     private UUID id = UUID.randomUUID();
 

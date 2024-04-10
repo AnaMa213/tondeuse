@@ -21,3 +21,6 @@ If you want to use your own input and output file/directory for the application 
 ```bash
 java -jar app.jar -i=file:dir/inputfile.txt -o=file:dir/outputfile.txt
 ```
+### Run already built jar
+
+You can also only download the JAR in the directory jar_zip to direclty run the previous java command. ( you'll still need Java 17 to run the command)

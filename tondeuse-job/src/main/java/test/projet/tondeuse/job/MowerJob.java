@@ -113,9 +113,9 @@ public class MowerJob {
      */
     @Bean
     @StepScope
-    public FlatFileItemWriter<Mower> itemWriter() {
+    public FlatFileItemWriter<Mower> itemWriter(@Value("#{jobParameters['outputfile']}") final Resource outputTxt) {
         FlatFileItemWriter<Mower> writer = new FlatFileItemWriter<>();
-        writer.setResource((WritableResource) this.outputTxt);
+        writer.setResource((WritableResource) outputTxt);
         //All job repetitions should recreate a new outputFile
         writer.setAppendAllowed(false);
         DelimitedLineAggregator<Mower> aggregator = new DelimitedLineAggregator<>();

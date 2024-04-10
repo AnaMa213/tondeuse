@@ -33,6 +33,9 @@ class MowerJobTest {
     @Value("${file.input}")
     private Resource inputFile;
 
+    @Value("${file.output}")
+    private Resource outputFile;
+
     /**
      * use case of {@link MowerJob#itemReader(Resource, LawnSizeHandler)}  } <p>
      * init item reader.
@@ -45,7 +48,7 @@ class MowerJobTest {
     }
 
     /**
-     * use case of {@link MowerJob#itemWriter() } <p>
+     * use case of {@link MowerJob#itemWriter(Resource)}  } <p>
      * init item writer.
      */
     @Test
@@ -53,7 +56,7 @@ class MowerJobTest {
         //GIVEN
 
         //WHEN / THEN
-        Assertions.assertDoesNotThrow(() -> this.mowerJob.itemWriter());
+        Assertions.assertDoesNotThrow(() -> this.mowerJob.itemWriter(this.outputFile));
     }
 
     /**

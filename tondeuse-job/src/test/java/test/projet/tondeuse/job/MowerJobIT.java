@@ -94,9 +94,11 @@ public class MowerJobIT {
     public void givenEmptyOutput_whenJobExecuted_thenSuccessAndOutputFill() throws Exception {
         // given
         Resource actualResult = this.testOutputTxt;
-
+        String inputFile = "input/tondeuse_instruction.txt";
+        String outputFile = "file:output/output.txt";
+        final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).addString("outputfile", outputFile).toJobParameters();
         // when
-        JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(defaultJobParameters());
+        JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(jp);
         JobInstance actualJobInstance = jobExecution.getJobInstance();
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
@@ -118,11 +120,13 @@ public class MowerJobIT {
     @Test
     public void givenEmptyOutput_whenStepReadAndOrderMowerStepExecuted_thenSuccessAndOutputFill() throws Exception {
         // given
-        Resource actualResult = this.testOutputTxt;
+        Resource actualResult = this.testOutputTxt;        String inputFile = "input/tondeuse_instruction.txt";
+        String outputFile = "file:output/output.txt";
+        final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).addString("outputfile", outputFile).toJobParameters();
 
         // when
         JobExecution jobExecution = jobLauncherTestUtils.launchStep(
-                "readAndOrderMowerStep", defaultJobParameters());
+                "readAndOrderMowerStep", jp);
         Collection<StepExecution> actualStepExecutions = jobExecution.getStepExecutions();
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 

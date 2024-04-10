@@ -99,13 +99,18 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String inputFile = "input/tondeuse_instruction.txt";
+        String outputfile = "file:output/output.txt";
         for (String arg : args) {
             if (arg.startsWith("--inputfile=")) {
-                inputFile = arg.substring(12);
+                inputFile = arg.substring(11);
+            }
+
+            if (arg.startsWith("--outputfile=")) {
+                outputfile = arg.substring(12);
             }
         }
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();
-        final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).toJobParameters();
+        final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).addString("outputfile", outputfile).toJobParameters();
         final JobExecution jobExecution = this.jobLauncher.run(this.mowerJob, jp);
         System.exit(exitCodeMapper.intValue(jobExecution.getExitStatus().getExitCode()));
     }

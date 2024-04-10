@@ -10,4 +10,4 @@ COPY ./tondeuse-job/target/*.jar /app/app.jar
 EXPOSE 8081
 
 # Run jar file when the container launches
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar", "inputfile"]

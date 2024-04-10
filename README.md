@@ -12,6 +12,6 @@ mvn clean install
 This should create a .jar in your target directory. Place yourself on this directory and use the following command.
 
 ```bash
-java -jar app.jar \\app.jar refering to the name of the jar
+java -jar app.jar //app.jar refering to the name of the jar
 ```
 Then the application should launch itself and a directory output with a file output.txt should appear in your project directory.

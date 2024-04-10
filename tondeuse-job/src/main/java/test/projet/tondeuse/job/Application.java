@@ -99,8 +99,10 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String inputFile = "input/tondeuse_instruction.txt";
-        if (!Arrays.stream(args).toList().isEmpty()) {
-            inputFile = args[0];
+        for (String arg : args) {
+            if (arg.startsWith("--inputfile=")) {
+                inputFile = arg;
+            }
         }
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();
         final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).toJobParameters();

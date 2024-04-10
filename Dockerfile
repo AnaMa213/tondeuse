@@ -4,7 +4,7 @@ FROM openjdk:17
 WORKDIR /app
 
 # Copy the fat jar into the container at /app
-COPY /target/*.jar /app/app.jar
+COPY ./tondeuse-job/target/*.jar /app/app.jar
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8081

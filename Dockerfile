@@ -7,7 +7,7 @@ WORKDIR /app
 COPY /target/*.jar /app/app.jar
 
 # Make port 8080 available to the world outside this container
-EXPOSE 8080
+EXPOSE 8081
 
 # Run jar file when the container launches
 CMD ["java", "-jar", "app.jar"]

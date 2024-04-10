@@ -19,5 +19,5 @@ Then the application should launch itself and a directory output with a file out
 If you want to use your own input and output file/directory for the application you can add the following argument (-i for inputfile, -o for outputfile) :
 
 ```bash
-java -jar app.jar -i ./inputfile.txt -o ./outputfile.txt
+java -jar app.jar -i=file:dir/inputfile.txt -o=file:dir/outputfile.txt
 ```

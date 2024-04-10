@@ -33,7 +33,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/AnaMa213/tondeuse.git</url>
+            <url>https://maven.pkg.github.com/AnaMa213/tondeuse</url>
         </repository>
     </distributionManagement>
     <dependencies>

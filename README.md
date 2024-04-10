@@ -44,4 +44,9 @@ Jenkins allows the build and packaging deploy of the application on github repos
 
 
 # Documentation
-This spring batch application has been documented with Javadoc.
+This spring batch application has been documented with Javadoc. You can generate Javadoc by using a maven command :
+
+```bash
+mvn site
+```
+

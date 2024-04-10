@@ -101,7 +101,7 @@ public class Application implements CommandLineRunner {
         String inputFile = "input/tondeuse_instruction.txt";
         for (String arg : args) {
             if (arg.startsWith("--inputfile=")) {
-                inputFile = arg;
+                inputFile = arg.substring(12);
             }
         }
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();

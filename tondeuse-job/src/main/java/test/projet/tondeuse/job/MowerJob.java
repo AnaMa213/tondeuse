@@ -45,11 +45,6 @@ import test.projet.tondeuse.job.reader.MultiLineMowerReader;
 public class MowerJob {
 
     /**
-     * input file read to get the mower and lawn information.
-     */
-    @Value("${file.input}")
-    private Resource inputTxt;
-    /**
      * localisation of the output file.
      */
     @Value("${file.output}")
@@ -84,7 +79,7 @@ public class MowerJob {
     protected Step readAndOrderMowerStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                                          ItemProcessor<Mower, Mower> processor, FlatFileItemWriter<Mower> writer, LawnSizeHandler lawnSizeHandler) {
         return new StepBuilder("readAndOrderMowerStep", jobRepository).<Mower, Mower>chunk(2, transactionManager)
-                .reader(itemReader(lawnSizeHandler)).processor(processor).writer(writer).listener(lawnSizeHandler).build();
+                .reader(itemReader(null, lawnSizeHandler)).processor(processor).writer(writer).listener(lawnSizeHandler).build();
     }
 
     /**
@@ -95,11 +90,11 @@ public class MowerJob {
      */
     @Bean
     @StepScope
-    public MultiLineMowerReader itemReader(LawnSizeHandler lawnSizeHandler) {
+    public MultiLineMowerReader itemReader(@Value("#{jobParameters['inputFile']}") final Resource inputFile, LawnSizeHandler lawnSizeHandler) {
         DelimitedLineTokenizer delimiter = new DelimitedLineTokenizer();
         delimiter.setDelimiter(" ");
         FlatFileItemReader<FieldSet> delegate = new FlatFileItemReaderBuilder<FieldSet>().name("delegateItemReader")
-                .resource(this.inputTxt)
+                .resource(inputFile)
                 .linesToSkip(1)
                 .skippedLinesCallback(lawnSizeHandler)
                 .lineTokenizer(delimiter)

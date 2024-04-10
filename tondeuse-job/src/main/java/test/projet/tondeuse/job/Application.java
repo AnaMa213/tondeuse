@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.ExitCodeMapper;
 import org.springframework.batch.core.launch.support.SimpleJvmExitCodeMapper;
@@ -97,8 +98,13 @@ public class Application implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
+        String inputFile = "input/tondeuse_instruction.txt";
+        if (!Arrays.stream(args).toList().isEmpty()) {
+            inputFile = args[0];
+        }
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();
-        final JobExecution jobExecution = this.jobLauncher.run(this.mowerJob, new JobParameters());
+        final JobParameters jp = new JobParametersBuilder().addString("inputFile", inputFile).toJobParameters();
+        final JobExecution jobExecution = this.jobLauncher.run(this.mowerJob, jp);
         System.exit(exitCodeMapper.intValue(jobExecution.getExitStatus().getExitCode()));
     }
 }

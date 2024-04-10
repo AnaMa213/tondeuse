@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import test.projet.tondeuse.job.handler.LawnSizeHandler;
 
 /**
@@ -28,16 +30,18 @@ class MowerJobTest {
     @Mock
     private LawnSizeHandler lawnSizeHandler;
 
+    @Value("${file.input}")
+    private Resource inputFile;
+
     /**
-     * use case of {@link MowerJob#itemReader(LawnSizeHandler) } <p>
+     * use case of {@link MowerJob#itemReader(Resource, LawnSizeHandler)}  } <p>
      * init item reader.
      */
     @Test
     void init_itemReaderTest() {
         //GIVEN
-
         //WHEN / THEN
-        Assertions.assertDoesNotThrow(() -> this.mowerJob.itemReader(this.lawnSizeHandler));
+        Assertions.assertDoesNotThrow(() -> this.mowerJob.itemReader(this.inputFile,this.lawnSizeHandler));
     }
 
     /**

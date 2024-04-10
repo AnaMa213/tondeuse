@@ -101,12 +101,12 @@ public class Application implements CommandLineRunner {
         String inputFile = "input/tondeuse_instruction.txt";
         String outputfile = "file:output/output.txt";
         for (String arg : args) {
-            if (arg.startsWith("-i")) {
-                inputFile = arg.substring(1);
+            if (arg.startsWith("-i=")) {
+                inputFile = arg.substring(2);
             }
 
-            if (arg.startsWith("-o")) {
-                outputfile = arg.substring(1);
+            if (arg.startsWith("-o=")) {
+                outputfile = arg.substring(2);
             }
         }
         final ExitCodeMapper exitCodeMapper = new SimpleJvmExitCodeMapper();

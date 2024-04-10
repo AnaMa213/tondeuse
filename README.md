@@ -24,3 +24,24 @@ java -jar app.jar -i=file:dir/inputfile.txt -o=file:dir/outputfile.txt
 ### Run already built jar
 
 You can also only download the JAR in the directory jar_zip to direclty run the previous java command. ( you'll still need Java 17 to run the command)
+
+# Build and Deploy via Jenkins build
+
+![image](https://github.com/AnaMa213/tondeuse/assets/15228021/6209ed95-a8c2-441c-9cc8-70308fc0f376)
+
+![image](https://github.com/AnaMa213/tondeuse/assets/15228021/6f26fbf0-47d3-4893-b969-00082427ebe5)
+
+Jenkins allows the build and packaging deploy of the application on github repository.
+
+![image](https://github.com/AnaMa213/tondeuse/assets/15228021/d76c7eb0-0135-409d-a4b4-038b4524021e)
+
+
+# Tests Coverage
+
+ The test coverage has been controled thanks to the plugin jacoco that create a code coverage report in the target directory. Here is the report (80% test coverage) :
+
+ ![image](https://github.com/AnaMa213/tondeuse/assets/15228021/1030aac0-f0cd-4a8d-ab58-d804f1e7cae4)
+
+
+# Documentation
+This spring batch application has been documented with Javadoc.

@@ -15,3 +15,9 @@ This should create a .jar in your target directory. Place yourself on this direc
 java -jar app.jar 
 ```
 Then the application should launch itself and a directory output with a file output.txt should appear in your project directory.
+
+If you want to use your own input and output file/directory for the application you can add the following argument :
+
+```bash
+java -jar app.jar ./inputfile.txt ./outputfile.txt
+```

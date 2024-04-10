@@ -1,6 +1,13 @@
 FROM openjdk:17
-VOLUME /tmp
-EXPOSE 8081
-ARG JAR_FILE=target/tondeuse-job-0.0.1-SNAPSHOT.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the fat jar into the container at /app
+COPY /target/*.jar /app/app.jar
+
+# Make port 8080 available to the world outside this container
+EXPOSE 8080
+
+# Run jar file when the container launches
+CMD ["java", "-jar", "app.jar"]
